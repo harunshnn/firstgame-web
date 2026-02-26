@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0f0f13;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#game-container {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    box-shadow: 0 0 30px rgba(0, 255, 204, 0.2);
+    border: 2px solid #00ffcc;
+    border-radius: 10px;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #1a1a24 0%, #050508 100%);
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(10, 10, 15, 0.85);
+    backdrop-filter: blur(5px);
+    pointer-events: auto;
+}
+
+.screen.active {
+    display: flex;
+}
+
+#hud-screen {
+    background: transparent;
+    backdrop-filter: none;
+    justify-content: flex-start;
+    padding: 20px;
+    pointer-events: none;
+}
+
+.hud-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 24px;
+    font-weight: 700;
+    text-shadow: 0 0 10px #00ffcc;
+}
+
+#score-display {
+    color: #ff00ff;
+    text-shadow: 0 0 10px #ff00ff;
+}
+
+#level-display {
+    color: #00ffcc;
+}
+
+h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    color: #00ffcc;
+    text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc;
+    text-align: center;
+    letter-spacing: 5px;
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+h1.victory-text {
+    color: #ffff00;
+    text-shadow: 0 0 20px #ffff00, 0 0 40px #ffff00;
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #ccc;
+    letter-spacing: 1px;
+}
+
+button {
+    margin-top: 30px;
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    color: #0f0f13;
+    background: #00ffcc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #00ffcc;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+button:hover {
+    background: #fff;
+    box-shadow: 0 0 25px #fff;
+    transform: scale(1.05);
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+    }
+    to {
+        text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
+    }
+}

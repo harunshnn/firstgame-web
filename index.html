@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Uzay Savaşı</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="ui-layer">
+            <div id="start-screen" class="screen active">
+                <h1>NEON SAVAŞÇI</h1>
+                <p>Hareket: Yön Tuşları veya W/A/S/D</p>
+                <p>Ateş Et: BOŞLUK (Space)</p>
+                <button id="start-btn">OYUNA BAŞLA</button>
+            </div>
+            
+            <div id="hud-screen" class="screen">
+                <div class="hud-top">
+                    <span id="score-display">Skor: 0</span>
+                    <span id="level-display">Seviye: 1</span>
+                </div>
+            </div>
+
+            <div id="level-transition-screen" class="screen">
+                <h1 id="level-title">SEVİYE 2</h1>
+                <p>Hazırlan!</p>
+            </div>
+
+            <div id="game-over-screen" class="screen">
+                <h1>OYUN BİTTİ</h1>
+                <p id="final-score">Skor: 0</p>
+                <button id="restart-btn">TEKRAR OYNA</button>
+            </div>
+
+            <div id="victory-screen" class="screen">
+                <h1 class="victory-text">TEBRİKLER!</h1>
+                <p>Tüm seviyeleri geçtin!</p>
+                <p id="victory-score">Skor: 0</p>
+                <button id="play-again-btn">YENİDEN OYNA</button>
+            </div>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>

@@ -61,7 +61,7 @@ window.addEventListener('keyup', (e) => {
 // Entities
 class Player {
     constructor() {
-        this.width = 400;
+        this.width = 40;
         this.height = 40;
         this.x = canvas.width / 2 - this.width / 2;
         this.y = canvas.height - this.height - 20;

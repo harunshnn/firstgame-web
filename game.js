@@ -1,6 +1,83 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// Audio Context and Synth Functions
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playShootSound() {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.type = 'square';
+    oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
+    oscillator.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.1);
+
+    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 0.1);
+}
+
+function playGameOverSound() {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.type = 'sawtooth';
+    oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 1.0);
+
+    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.0);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 1.0);
+}
+
+let bgmOscillator = null;
+let bgmGainNode = null;
+
+function playBackgroundMusic() {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    stopBackgroundMusic(); // Ensure no duplicates
+
+    bgmOscillator = audioCtx.createOscillator();
+    bgmGainNode = audioCtx.createGain();
+
+    bgmOscillator.type = 'sine';
+
+    // Create a subtle rhythm by modulating frequency slightly
+    bgmOscillator.frequency.setValueAtTime(65, audioCtx.currentTime); // Deep bass C2
+
+    // Low volume
+    bgmGainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+
+    bgmOscillator.connect(bgmGainNode);
+    bgmGainNode.connect(audioCtx.destination);
+
+    bgmOscillator.start();
+}
+
+function stopBackgroundMusic() {
+    if (bgmOscillator) {
+        bgmOscillator.stop();
+        bgmOscillator.disconnect();
+        bgmOscillator = null;
+    }
+    if (bgmGainNode) {
+        bgmGainNode.disconnect();
+        bgmGainNode = null;
+    }
+}
+
 // UI Elements
 const startScreen = document.getElementById('start-screen');
 const hudScreen = document.getElementById('hud-screen');
@@ -97,6 +174,7 @@ class Player {
             const now = Date.now();
             if (now - this.lastShot > this.fireRate) {
                 projectiles.push(new Projectile(this.x + this.width / 2, this.y));
+                playShootSound();
                 this.lastShot = now;
             }
         }
@@ -260,6 +338,8 @@ function startGame() {
     switchScreen(hudScreen);
     gameState = 'PLAYING';
 
+    playBackgroundMusic();
+
     if (animationId) cancelAnimationFrame(animationId);
     animate();
 }
@@ -342,6 +422,11 @@ function endGame(type) {
     gameState = type;
     projectiles = [];
     enemies = [];
+
+    stopBackgroundMusic();
+    if (type === 'GAMEOVER') {
+        playGameOverSound();
+    }
 
     setTimeout(() => {
         if (type === 'GAMEOVER') {
